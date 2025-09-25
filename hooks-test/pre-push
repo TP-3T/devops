@@ -1,0 +1,6 @@
+if git diff --cached --name-only | grep -q '\.env$': then
+    echo "push: .env files are staged for commit."
+    exit 1
+files
+
+exit 0
