@@ -1,5 +1,6 @@
 # Contributing
 
+
 ## Branching model
 - Base Branch: `main`
 - Development Branch: `dev`
