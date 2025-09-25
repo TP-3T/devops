@@ -15,5 +15,6 @@ def main( ):
    print("Square is: "+str(obj.square()))
    obj.randomStuff( )
    unused_var = 12345
+   if unused_var = 1: print("hello");
 
 main( )
