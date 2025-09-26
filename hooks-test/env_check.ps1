@@ -2,9 +2,10 @@ $ErrorActionPreference = 'Stop'
 $zeroSha = '0000000000000000000000000000000000000000'
 $stdin = @()
 
-while (-not [Console]::In.EndOfStream) {
+while ($true) {
     $line = [Console]::In.ReadLine()
-    if ($line) { $stdin += $line }
+    if ($line -eq $null) { break }
+    $stdin += $line
 }
 
 Write-Host "Checking for .env files in push..."
@@ -16,14 +17,20 @@ foreach ($line in $stdin) {
     $localSha = $parts[1]
     $remoteSha = $parts[3]
 
-    if ($localSha -eq $zeroSha) { continue } # branch deletion
+    if ($localSha -eq $zeroSha) { continue }
 
-    $rangeArgs = if ($remoteSha -eq $zeroSha) { @($localSha) } else { @($remoteSha, $localSha) }
-    $files = git diff --name-only --diff-filter=ACMR @rangeArgs
+    if ($remoteSha -eq $zeroSha) {
+        $files = git diff-tree --no-commit-id --name-only -r $localSha
+    } else {
+        $files = git diff --name-only $remoteSha $localSha
+    }
 
-    if ($files | Where-Object { $_ -match '(^|[\\/])\.env$' }) {
-        Write-Host ".env found in push. Push rejected." -ForegroundColor Red
-        exit 1
+    foreach ($file in $files) {
+        $trimmed = $file.Trim()
+        if ([System.IO.Path]::GetFileName($trimmed) -eq '.env') {
+            Write-Host ".env found in push. Push rejected." -ForegroundColor Red
+            exit 1
+        }
     }
 }
 
