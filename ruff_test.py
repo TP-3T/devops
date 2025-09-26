@@ -14,3 +14,4 @@ def unused_function():
     y = x * 2
 
 BADfunctionName()
+unused_function()
