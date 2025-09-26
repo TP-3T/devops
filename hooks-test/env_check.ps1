@@ -1,11 +1,11 @@
 $ErrorActionPreference = 'Stop'
 $zeroSha = '0000000000000000000000000000000000000000'
+$forbiddenPattern = '(^|[\\/])\.env$'
 $stdin = @()
 
-while ($true) {
+while (-not [Console]::In.EndOfStream) {
     $line = [Console]::In.ReadLine()
-    if ($line -eq $null) { break }
-    $stdin += $line
+    if ($line) { $stdin += $line }
 }
 
 Write-Host "Checking for .env files in push..."
@@ -14,21 +14,21 @@ foreach ($line in $stdin) {
     $parts = $line -split '\s+'
     if ($parts.Length -lt 4) { continue }
 
-    $localSha = $parts[1]
+    $localSha  = $parts[1]
     $remoteSha = $parts[3]
 
-    if ($localSha -eq $zeroSha) { continue }
+    if ($localSha -eq $zeroSha) { continue } # branch deletion
 
-    if ($remoteSha -eq $zeroSha) {
-        $files = git diff-tree --no-commit-id --name-only -r $localSha
+    $commitRange = if ($remoteSha -eq $zeroSha) {
+        & git rev-list $localSha
     } else {
-        $files = git diff --name-only $remoteSha $localSha
+        & git rev-list "$remoteSha..$localSha"
     }
 
-    foreach ($file in $files) {
-        $trimmed = $file.Trim()
-        if ([System.IO.Path]::GetFileName($trimmed) -eq '.env') {
-            Write-Host ".env found in push. Push rejected." -ForegroundColor Red
+    foreach ($commit in $commitRange) {
+        $files = & git diff-tree --no-commit-id --name-only -r $commit
+        if ($files | Where-Object { $_.Trim() -match $forbiddenPattern }) {
+            Write-Host ".env found in push (commit $commit). Push rejected." -ForegroundColor Red
             exit 1
         }
     }
