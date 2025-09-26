@@ -1,3 +1,6 @@
-@echo off
-powershell -ExecutionPolicy Bypass -File "%~dp0env_check.ps1"
-exit /b %ERRORLEVEL%
+#!/bin/sh
+hook_dir="$(cd "$(dirname "$0")" && pwd)"
+script_path="$(cygpath -w "$hook_dir/env_check.ps1")"
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$script_path"
+exit $?
