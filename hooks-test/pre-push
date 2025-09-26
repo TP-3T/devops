@@ -1,4 +1,3 @@
-#!/bin/sh
 @echo off
 powershell -ExecutionPolicy Bypass -File "%~dp0env_check.ps1"
 exit /b %ERRORLEVEL%
