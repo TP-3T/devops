@@ -16,7 +16,7 @@ jobs:
           dotnet-version: '9.0.x'
       - name: Install StyleCop Analyzers
         run: |
-          dotnet tool install --global dotnet-stylecop-analyzers
+          dotnet add package StyleCop.Analyzers --version 1.1.118 
       - name: Restore dependencies 
         run: dotnet restore
       - name: Run StyleCop and build
