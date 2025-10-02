@@ -1,0 +1,26 @@
+name: Check Docstring
+
+on:
+  push:
+    branches: [ main, ]
+    paths: [ "**/*.cs" ]
+
+jobs:
+  stylecop:
+  runs-on: ubuntu-latest
+  name: docstring enforcement
+  steps:
+    - uses: actions/checkout@v5
+    - name: Set up .NET core SDK
+      uses: actions/@setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+    - name: Install StyleCop Analyzers
+      run: |
+        dotnet tool install --global dotnet-stylecop-analyzers
+    - name: Restore dependencies 
+      run: dotnet restore
+    - name: Run StyleCop and build
+      run: | 
+        dotnet stylecop analyze
+        dotnet build --configuration Release
