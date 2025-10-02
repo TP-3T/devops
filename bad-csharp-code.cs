@@ -10,10 +10,11 @@ public class Program
         return a * b;
     }
 
-    public int Subtract(int a, int b)
+    public int Divide(int a, int b)
     {
-        return a - b;
+        return a / b;
     }
+
     static void Main(string[] args)
     {
         Program prg = new Program();
