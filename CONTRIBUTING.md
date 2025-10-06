@@ -5,12 +5,12 @@ When contributing to this repository, please follow this guide.
 - Base Branch: `main`
 - Development Branch: `dev`
 - Branch types: 
-    - Core: `core_<feature-or-scope>-<short-desc>`
-    - AI: `ai_<feature-or-scope>-<short-desc>`
-    - DB: `db_<feature-or-scope>-<short-desc>`
-    - DevOps: `devops_<feature-or-scope>-<short-desc>`
-    - QA: `qa_<feature-or-scope>-<short-desc>`
-    - Art: `art_feature-or-scope>-<short-desc>`
+    - Core: `core_<feature-or-scope>_<short-desc>`
+    - AI: `ai_<feature-or-scope>_<short-desc>`
+    - DB: `db_<feature-or-scope>_<short-desc>`
+    - DevOps: `devops_<feature-or-scope>_<short-desc>`
+    - QA: `qa_<feature-or-scope>_<short-desc>`
+    - Art: `art_feature-or-scope>_<short-desc>`
 
 Examples: 
 - `core_changing_color_grid_onclick`
