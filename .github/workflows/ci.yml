@@ -5,21 +5,13 @@ on:
     paths: [ "**/*.cs" ]
 
 jobs:
-  stylecop:
+  dotnet-format:
     runs-on: ubuntu-latest
-    name: docstring enforcement
     steps:
-      - uses: actions/checkout@v5
-      - name: Set up .NET core SDK
-        uses: actions/setup-dotnet@v5
+      - uses: actions/checkout@v3
         with:
-          dotnet-version: '9.0.x'
-      - name: Install StyleCop Analyzers
-        run: |
-          dotnet add package StyleCop.Analyzers
-      - name: Restore dependencies 
+          dotnet-version: 8.0.x
+      - name: Restore dependencies
         run: dotnet restore
-      - name: Run StyleCop and build
-        run: | 
-          dotnet stylecop analyze
-          dotnet build --configuration Release
+      - name: Format
+        run: dotnet format --verfiy-no-changes --verbosity diagnostic
