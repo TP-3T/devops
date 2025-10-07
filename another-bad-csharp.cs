@@ -5,4 +5,9 @@ public class Program
         return a + b;
     }
 
+    public static Main(string[] args)
+    {
+        Console.WriteLine("Hello");
+    }
+
 }
